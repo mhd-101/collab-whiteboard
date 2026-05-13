@@ -1,22 +1,11 @@
 "use client";
 
-import { Tool } from "../state/toolState";
+import { tools } from "../constants";
+import { useToolStore } from "../state/useToolStore";
 
-interface ToolbarProps {
-  activeTool: Tool;
-  onToolChange: (tool: Tool) => void;
-}
-
-const tools = [
-  { id: "select" as Tool, label: "Select", icon: "↖" },
-  { id: "rect" as Tool, label: "Rectangle", icon: "▭" },
-  { id: "circle" as Tool, label: "Circle", icon: "○" },
-  { id: "arrow" as Tool, label: "Arrow", icon: "→" },
-  { id: "text" as Tool, label: "Text", icon: "T" },
-  { id: "pen" as Tool, label: "Pen", icon: "✏" },
-];
-
-export function Toolbar({ activeTool, onToolChange }: ToolbarProps) {
+export function Toolbar() {
+  const activeTool = useToolStore((state) => state.activeTool);
+  const setActiveTool = useToolStore((state) => state.setActiveTool);
   return (
     <div className="flex flex-col gap-2 p-4 bg-gray-100 border-r border-gray-300">
       <h3 className="text-sm font-semibold text-gray-700 mb-2">Tools</h3>
@@ -24,7 +13,7 @@ export function Toolbar({ activeTool, onToolChange }: ToolbarProps) {
         {tools.map((tool) => (
           <button
             key={tool.id}
-            onClick={() => onToolChange(tool.id)}
+            onClick={() => setActiveTool(tool.id)}
             className={`flex items-center gap-3 px-3 py-2 text-left rounded-md transition-colors ${
               activeTool === tool.id
                 ? "bg-blue-500 text-white"
